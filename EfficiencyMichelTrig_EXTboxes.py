@@ -50,7 +50,8 @@ trigtotlist = []
 #trig_result5 = 0
 print("Total number of events = " + str(numEvents))
 #for x in range(0,1000):
-for x in range(0,numEvents):
+nE = 500
+for x in range(0,nE):#numEvents
 	#print("Event = " + str(x))
 	if (x%100 == 0):
 		print(str(float(x)*100.0/float(numEvents)) +"% completed")
@@ -70,6 +71,7 @@ for x in range(0,numEvents):
 
 trig_eff = float(trig_eff)/float(numEvents)*100.0
 print("Total number of events = " +str(numEvents))
+print("Total of events run over = " +str(nE))
 print("Percent of events triggered on = " +str(trig_eff))
 finish = datetime.now()
 print("Start time = " + str(start))
