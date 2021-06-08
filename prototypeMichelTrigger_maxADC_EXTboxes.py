@@ -1,3 +1,8 @@
+#Originally written by XXXXX
+#Used for testing and demonstration by J. L. Barrow
+#06/2021
+#Scripts will be changed for multipronged triggering
+
 #!/usr/bin/env python3
 #Class for Michel e- trigger in uB, Harrison Siegel, Columbia University 2021
 
