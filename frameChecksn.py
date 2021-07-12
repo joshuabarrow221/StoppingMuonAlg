@@ -1,5 +1,8 @@
-#f = open("frtest","r")
-f = open("SN_0026592","r") 
+#Code to check on the frame numbers using SN stream data files. 
+#D.Kalra (dkalra@nevis.columbi.edu) (dk3172@columbia.edu) (June 22, 2021)  
+
+#Command to convert binary to hex-dump file: hexdump -v -e '8/4 "%08X ""\n"' BINARYFILE
+f = open("SN_Nominal_0026659","r") #input is hex-dump file
 scale = 16 ## equals to hexadecimal                                                                                            
 num_of_bits = 16
 tot = 0
