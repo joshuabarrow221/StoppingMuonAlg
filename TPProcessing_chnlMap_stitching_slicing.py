@@ -1,3 +1,6 @@
+####Decode the binary supernova (SN) file, calculates Trigger primitives from SN ROIs. Channel mapping is done to convert channels into LArSoft channels. Then, the code stitches TPs from 1.6 ms frames so as to save TPs in 2.3 ms drift window and finally create 96 channels long slices.
+#Code is developed by Daisy Kalra (dkalra@nevis.columbi.edu) (dk3172@columbia.edu) (August 12, 2021) 
+ 
 import matplotlib.pyplot as plt
 import matplotlib.colors as clrs
 import matplotlib.cm as cm
