@@ -12,7 +12,7 @@ import sys
 
 sys.path.append(".")
 
-from GenerateTP import GenerateTP
+from TriggerAlg import TriggerAlg
 from datetime import datetime
 start = datetime.now()
 
