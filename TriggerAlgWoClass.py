@@ -1,3 +1,5 @@
+#code to run Trigger Algorithm which takes Stitched TP as input list
+#D.Kalra dkalra@nevis.columbia.edu 
 import numpy as np
 import csv
 import operator
