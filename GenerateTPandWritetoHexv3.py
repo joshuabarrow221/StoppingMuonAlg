@@ -9,13 +9,16 @@ import matplotlib
 import numpy as np
 import csv
 import operator
+import sys
 
 #Command to convert binary to hex-dump file: hexdump -v -e '8/4 "%08X ""\n"' BINARYFILE 
 #input file name: hexdump from SN binary
-f=open("hexnominal28554","r")
+#f=open("hexnominal28554","r")
+f=open(sys.argv[1],"r")
 
 #output file name: to write TPs
-outf = open("nominal28554","w")  
+#outf = open("nominal28554","w")  
+outf=open(sys.argv[2],"w")
 
 scale = 16
 femm=0
