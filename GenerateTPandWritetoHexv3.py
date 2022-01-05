@@ -1,11 +1,11 @@
 #Code to produce TPs from SN hex-formatted file and write the TPS in hex-file in specified format
 #Code developed by Daisy Kalra (dkalra@nevis.columbia.edu) October 25, 2020
-import matplotlib.pyplot as plt
-import matplotlib.colors as clrs
-import matplotlib.cm as cm
-from matplotlib.collections import PatchCollection
-from matplotlib.patches import Rectangle
-import matplotlib
+#import matplotlib.pyplot as plt
+#import matplotlib.colors as clrs
+#import matplotlib.cm as cm
+#from matplotlib.collections import PatchCollection
+#from matplotlib.patches import Rectangle
+#import matplotlib
 import numpy as np
 import csv
 import operator
@@ -50,7 +50,7 @@ tplistamp=[]
 tplisttot=[]
 femlist=[]
 totlist=[]
-fig, ax = plt.subplots(1)
+#fig, ax = plt.subplots(1)
 channelfilterlist=[]
 larchnlNumfilterlist=[]
 timefilterlist=[]
@@ -412,6 +412,5 @@ for l in f:
                         outf.write(INTGRL+' ')
                         INTGRLlist.append(INTGRL)
 
-print("tplist: "+str(len(tplistint)))
-
+#print("tplist: "+str(len(tplistint)))
 #sed 's/\([^ ]*\) /\1\n/' test | fold -w 63 > test1
