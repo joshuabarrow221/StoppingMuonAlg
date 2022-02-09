@@ -11,8 +11,6 @@ void hexdump_file_cut(string inFile_data = "")
   //Make some global variables
   string hexdump_original_filename = /*"seb01_28552"*/inFile_data;//Example file name
   std::cout << hexdump_original_filename << std::endl;
-  //Output a file list
-  ofstream filelist("filelist.txt");
   
   string start_of_frame = "FFFFFFFF";//Start frame word
   string end_of_frame = "E0000000";//End of frame word
@@ -43,9 +41,13 @@ void hexdump_file_cut(string inFile_data = "")
   //Create an out stream filename
   string out_cut_hexdump_filename = hexdump_original_filename.append("_subrun_0");
   std::cout << out_cut_hexdump_filename << std::endl;
-  filelist << out_cut_hexdump_filename << std::endl;
+  
   //Create the new file
   std::ofstream out_cut_hexdump_file;
+  //Output a file list
+  std::ofstream filelist("filelist.txt");
+  filelist << out_cut_hexdump_filename << std::endl;
+  //Open the cut file
   out_cut_hexdump_file.open(out_cut_hexdump_filename);
 
   out_cut_hexdump_file << first_number << "  " << column2 << "  " << column3 << "  " << column4 << "  " << column5 << "  " << column6 << "  " <<  column7
