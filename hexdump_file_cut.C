@@ -45,8 +45,8 @@ void hexdump_file_cut(string inFile_data = "")
   //Create the new file
   std::ofstream out_cut_hexdump_file;
   //Output a file list
-  std::ofstream filelist("filelist.txt");
-  filelist << out_cut_hexdump_filename << std::endl;
+  //std::ofstream filelist("filelist.txt");
+  //filelist << out_cut_hexdump_filename << std::endl;
   //Open the cut file
   out_cut_hexdump_file.open(out_cut_hexdump_filename);
 
@@ -72,7 +72,7 @@ void hexdump_file_cut(string inFile_data = "")
 	      out_cut_hexdump_filename.append( to_string(number_of_frames/max_number_of_frames) );
 	      out_cut_hexdump_file.open(out_cut_hexdump_filename);
 	      std::cout << out_cut_hexdump_filename << std::endl;
-	      filelist << out_cut_hexdump_filename << std::endl;
+	      //filelist << out_cut_hexdump_filename << std::endl;
 	      out_cut_hexdump_file << first_number << "  ";
 	    }
 	}
@@ -91,7 +91,7 @@ void hexdump_file_cut(string inFile_data = "")
 	      out_cut_hexdump_filename.append( to_string(number_of_frames/max_number_of_frames) );
 	      out_cut_hexdump_file.open(out_cut_hexdump_filename);
 	      std::cout << out_cut_hexdump_filename << std::endl;
-	      filelist << out_cut_hexdump_filename << std::endl;
+	      //filelist << out_cut_hexdump_filename << std::endl;
 	      out_cut_hexdump_file << first_number << "  CRAPCRAP  ";
 	    }
 	} 
@@ -110,7 +110,7 @@ void hexdump_file_cut(string inFile_data = "")
 	      out_cut_hexdump_filename.append( to_string(number_of_frames/max_number_of_frames) );
 	      out_cut_hexdump_file.open(out_cut_hexdump_filename);
 	      std::cout << out_cut_hexdump_filename << std::endl;
-	      filelist << out_cut_hexdump_filename << std::endl;
+	      //filelist << out_cut_hexdump_filename << std::endl;
 	      out_cut_hexdump_file << first_number << "  CRAPCRAP  CRAPCRAP  ";
 	    }
 	}
@@ -129,7 +129,7 @@ void hexdump_file_cut(string inFile_data = "")
 	      out_cut_hexdump_filename.append( to_string(number_of_frames/max_number_of_frames) );
 	      out_cut_hexdump_file.open(out_cut_hexdump_filename);
 	      std::cout << out_cut_hexdump_filename << std::endl;
-	      filelist << out_cut_hexdump_filename << std::endl;
+	      //filelist << out_cut_hexdump_filename << std::endl;
 	      out_cut_hexdump_file << first_number << "  CRAPCRAP  CRAPCRAP  CRAPCRAP  ";
 	    }
 	}
@@ -148,7 +148,7 @@ void hexdump_file_cut(string inFile_data = "")
 	      out_cut_hexdump_filename.append( to_string(number_of_frames/max_number_of_frames) );
 	      out_cut_hexdump_file.open(out_cut_hexdump_filename);
 	      std::cout << out_cut_hexdump_filename << std::endl;
-	      filelist << out_cut_hexdump_filename << std::endl;
+	      //filelist << out_cut_hexdump_filename << std::endl;
 	      out_cut_hexdump_file << first_number << "  CRAPCRAP  CRAPCRAP  CRAPCRAP  CRAPCRAP  ";
 	    }
 	}
@@ -167,7 +167,7 @@ void hexdump_file_cut(string inFile_data = "")
 	      out_cut_hexdump_filename.append( to_string(number_of_frames/max_number_of_frames) );
 	      out_cut_hexdump_file.open(out_cut_hexdump_filename);
 	      std::cout << out_cut_hexdump_filename << std::endl;
-              filelist << out_cut_hexdump_filename << std::endl;
+              //filelist << out_cut_hexdump_filename << std::endl;
 	      out_cut_hexdump_file << first_number << "  CRAPCRAP  CRAPCRAP  CRAPCRAP  CRAPCRAP  CRAPCRAP  ";
 	    }
 	}
@@ -186,7 +186,7 @@ void hexdump_file_cut(string inFile_data = "")
 	      out_cut_hexdump_filename.append( to_string(number_of_frames/max_number_of_frames) );
 	      out_cut_hexdump_file.open(out_cut_hexdump_filename);
 	      std::cout << out_cut_hexdump_filename << std::endl;
-	      filelist << out_cut_hexdump_filename << std::endl;
+	      //filelist << out_cut_hexdump_filename << std::endl;
 	      out_cut_hexdump_file << first_number << "  CRAPCRAP  CRAPCRAP  CRAPCRAP  CRAPCRAP  CRAPCRAP  CRAPCRAP  ";
 	    }
 	}
@@ -205,7 +205,7 @@ void hexdump_file_cut(string inFile_data = "")
 	      out_cut_hexdump_filename.append( to_string(number_of_frames/max_number_of_frames) );
 	      out_cut_hexdump_file.open(out_cut_hexdump_filename);
 	      std::cout << out_cut_hexdump_filename << std::endl;
-	      filelist << out_cut_hexdump_filename << std::endl;
+	      //filelist << out_cut_hexdump_filename << std::endl;
 	      //out_cut_hexdump_file << first_number << "  ";
 	    }
 	}      
