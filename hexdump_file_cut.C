@@ -42,16 +42,18 @@ void hexdump_file_cut(string inFile_data = "")
   string out_cut_hexdump_filename = hexdump_original_filename.append("_subrun_0");
   std::cout << out_cut_hexdump_filename << std::endl;
   
-  //Create the new file
+  //Create the new cut file stream
   std::ofstream out_cut_hexdump_file;
-  //Output a file list
-  //std::ofstream filelist("filelist.txt");
-  //filelist << out_cut_hexdump_filename << std::endl;
+  //Output the new filelist stream
+  std::ofstream filelist;
   //Open the cut file
   out_cut_hexdump_file.open(out_cut_hexdump_filename);
-
+  filelist.open("filelist.txt");
+  //Write out the first line of the hexdump
   out_cut_hexdump_file << first_number << "  " << column2 << "  " << column3 << "  " << column4 << "  " << column5 << "  " << column6 << "  " <<  column7
 		       << "  " << column8 << std::endl;
+  //Write out the file name/path
+  filelist << out_cut_hexdump_filename << std::endl;
 
   for(int i=1; i < number_lines_original_file; i++)
     {
@@ -72,7 +74,7 @@ void hexdump_file_cut(string inFile_data = "")
 	      out_cut_hexdump_filename.append( to_string(number_of_frames/max_number_of_frames) );
 	      out_cut_hexdump_file.open(out_cut_hexdump_filename);
 	      std::cout << out_cut_hexdump_filename << std::endl;
-	      //filelist << out_cut_hexdump_filename << std::endl;
+	      filelist << out_cut_hexdump_filename << std::endl;
 	      out_cut_hexdump_file << first_number << "  ";
 	    }
 	}
@@ -91,7 +93,7 @@ void hexdump_file_cut(string inFile_data = "")
 	      out_cut_hexdump_filename.append( to_string(number_of_frames/max_number_of_frames) );
 	      out_cut_hexdump_file.open(out_cut_hexdump_filename);
 	      std::cout << out_cut_hexdump_filename << std::endl;
-	      //filelist << out_cut_hexdump_filename << std::endl;
+	      filelist << out_cut_hexdump_filename << std::endl;
 	      out_cut_hexdump_file << first_number << "  CRAPCRAP  ";
 	    }
 	} 
@@ -110,7 +112,7 @@ void hexdump_file_cut(string inFile_data = "")
 	      out_cut_hexdump_filename.append( to_string(number_of_frames/max_number_of_frames) );
 	      out_cut_hexdump_file.open(out_cut_hexdump_filename);
 	      std::cout << out_cut_hexdump_filename << std::endl;
-	      //filelist << out_cut_hexdump_filename << std::endl;
+	      filelist << out_cut_hexdump_filename << std::endl;
 	      out_cut_hexdump_file << first_number << "  CRAPCRAP  CRAPCRAP  ";
 	    }
 	}
@@ -129,7 +131,7 @@ void hexdump_file_cut(string inFile_data = "")
 	      out_cut_hexdump_filename.append( to_string(number_of_frames/max_number_of_frames) );
 	      out_cut_hexdump_file.open(out_cut_hexdump_filename);
 	      std::cout << out_cut_hexdump_filename << std::endl;
-	      //filelist << out_cut_hexdump_filename << std::endl;
+	      filelist << out_cut_hexdump_filename << std::endl;
 	      out_cut_hexdump_file << first_number << "  CRAPCRAP  CRAPCRAP  CRAPCRAP  ";
 	    }
 	}
@@ -148,7 +150,7 @@ void hexdump_file_cut(string inFile_data = "")
 	      out_cut_hexdump_filename.append( to_string(number_of_frames/max_number_of_frames) );
 	      out_cut_hexdump_file.open(out_cut_hexdump_filename);
 	      std::cout << out_cut_hexdump_filename << std::endl;
-	      //filelist << out_cut_hexdump_filename << std::endl;
+	      filelist << out_cut_hexdump_filename << std::endl;
 	      out_cut_hexdump_file << first_number << "  CRAPCRAP  CRAPCRAP  CRAPCRAP  CRAPCRAP  ";
 	    }
 	}
@@ -167,7 +169,7 @@ void hexdump_file_cut(string inFile_data = "")
 	      out_cut_hexdump_filename.append( to_string(number_of_frames/max_number_of_frames) );
 	      out_cut_hexdump_file.open(out_cut_hexdump_filename);
 	      std::cout << out_cut_hexdump_filename << std::endl;
-              //filelist << out_cut_hexdump_filename << std::endl;
+              filelist << out_cut_hexdump_filename << std::endl;
 	      out_cut_hexdump_file << first_number << "  CRAPCRAP  CRAPCRAP  CRAPCRAP  CRAPCRAP  CRAPCRAP  ";
 	    }
 	}
@@ -186,7 +188,7 @@ void hexdump_file_cut(string inFile_data = "")
 	      out_cut_hexdump_filename.append( to_string(number_of_frames/max_number_of_frames) );
 	      out_cut_hexdump_file.open(out_cut_hexdump_filename);
 	      std::cout << out_cut_hexdump_filename << std::endl;
-	      //filelist << out_cut_hexdump_filename << std::endl;
+	      filelist << out_cut_hexdump_filename << std::endl;
 	      out_cut_hexdump_file << first_number << "  CRAPCRAP  CRAPCRAP  CRAPCRAP  CRAPCRAP  CRAPCRAP  CRAPCRAP  ";
 	    }
 	}
@@ -205,7 +207,7 @@ void hexdump_file_cut(string inFile_data = "")
 	      out_cut_hexdump_filename.append( to_string(number_of_frames/max_number_of_frames) );
 	      out_cut_hexdump_file.open(out_cut_hexdump_filename);
 	      std::cout << out_cut_hexdump_filename << std::endl;
-	      //filelist << out_cut_hexdump_filename << std::endl;
+	      filelist << out_cut_hexdump_filename << std::endl;
 	      //out_cut_hexdump_file << first_number << "  ";
 	    }
 	}      
