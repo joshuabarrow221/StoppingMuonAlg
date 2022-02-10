@@ -212,4 +212,5 @@ void hexdump_file_cut(string inFile_data = "")
 	    }
 	}      
     }
+  filelist.close();
 }
