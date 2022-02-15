@@ -6,7 +6,7 @@
 #import numpy as np
 #import pandas as pd
 #add data transfer systems 
-import zmq
+#import zmq
 import json
 import time
 #import pandas as pd
