@@ -11,23 +11,13 @@ import json
 import time
 #import pandas as pd
 import cProfile
-port = 6665
+#port = 6665
+import sys
 
-context = zmq.Context()
-socket = context.socket(zmq.PUB)
-socket.bind("tcp://*:%s" % port)
-
-#Command to convert binary to hex-dump file: hexdump -v -e '8/4 "%08X ""\n"' BINARYFILE 
-
-#f=open("testnominal_folded28554_head_threeframes", "r")
-#f=open("testnominal_folded28554_25frames", "r")
-
-pr = cProfile.Profile()
-#pr.enable()
-#f=open("../testnominal_folded28554_head_testmore25frames", "r")
-f=open("../../testnominal_folded28554_head_7frames", "r")
+f=open(sys.argv[1],"r")
 cratenum=2
 
+outf=open(sys.argv[2],"w")
 
 scale = 16 ## equals to hexadecimal
 num_of_bits = 16
@@ -84,7 +74,7 @@ class ChannelMap:
         except KeyError:
             return [-1, -1, -1]
 
-chMap = ChannelMap("../../ChnlMap.txt")
+chMap = ChannelMap("ChnlMap.txt")
 cratenum=2
 framelistfull = []
 framelist2 = 0
@@ -128,12 +118,7 @@ for r in range(25):
                     #print("wf 5 hdr: "+str(wf))
                     femheader1=wrb[4:]
                     femheader2=wlb[4:]
-                    #femh=wrh[1:]+wlh[1:]
-                    #print("wf 5hdr: "+str(wf))                                                                                                                                                                   
-                    #frame = int(wrh[1:], 16) + int(wlh[1:], 16)                                                                                                                                                  
-                    #frame1 = int(wrh[1:], 16) + int(wlh[1:], 16)
-                    #print("Frame1 is: "+str(frame1))
-                    #framelistfull.append(frame)                                                                                                                                                                  
+                  
                 if hdrcnt == 8:
                     #print("wf is :"+str(wf))
                     if (wrh[0] == "1"):
@@ -142,56 +127,18 @@ for r in range(25):
                         chnlheader_b=wrb[-12:-6] #[10:]                                                                                                            
                         frameword_b=femheader1+femheader2[0:6]+chnlheader_b
                         frame=int((frameword_b),2)
-                        #frame = maskedframe
-                        #frmcnt += 1
-                        #if(frmcnt==4):
-                            #framelist=[]
-                            #frmcnt=1
                         framelist.append(frame)
                         min1p=min(framelist)+frmstep
-                        #print("Starting Frame is: "+str(framelist))
-                        #print("min1p: "+str(min1p))
-                        #print("Frame2 is: "+str(frame2))
-                        '''if(frame1 == frame2):
-                            frame = frame1
-                            framelist.append(frame)
-                            min1p=min(framelist)
-                            #print("Starting Frame is: "+str(framelist))
-                            #print("min1p: "+str(min1p))
-                        elif(frame1 != frame2):
-                            #print("Mismatch in frame numbers! Lets calculate masked frame number")
-                            frameword_b=femheader1+femheader2[0:6]+chnlheader_b
-                            maskedframe=int((frameword_b),2)
-                            #print("Masked Frame is: " + str(maskedframe))
-                            frame = maskedframe
-                            framelist.append(frame)
-                            min1p=min(framelist)'''
-                            #print("Starting Frame is: "+str(framelist))
-                            #print("min1p: "+str(min1p))
 
             if (wf[0:2] == "F1" and wf[4:8] == "FFFF"):
                 femm=int(wlb[-5:], 2)
-                #femlist.append(femm)    
-                #print("FEM is: "+str(femm))
 
 
             elif wf == "E0000000":
-                #frmcntby0 += 1
-                #if(frmcntby0==3):
-                    #frmstep = frmstep+3
-                    #frmcntby0 = 0
-                    #print("TP list len at EO3Fs: " + str(len(tplistcollection)))
-                    #TP_df = pd.DataFrame(tplistcollection)
-                    #print("check TP df: ", TP_df) 
-                    #TP_send_data = json.dumps(tplistcollection)
-                    #socket.send_json(TP_send_data) 
-                    #TP_send_data = json.dumps(tplistCol).encode('utf8')                                                 
-                    #socket.send(TP_send_data)
-                    #tplistcollection.clear()
                 hdrcnt = 0
                 #print("TP list len at EOF" + str(len(tplistcollection)))
                 frend=time.time()
-                print("Frameend: "+str(frend))
+                #print("Frameend: "+str(frend))
 
             else:
                 #print("Check len of framelist: "+str(framelist))
@@ -201,11 +148,6 @@ for r in range(25):
                             channel = int(wrb[-6:],2)
                             #channellist.append(channel)
                             larchnlNum = str(chMap.CrateFEMCh2PlaneWire(cratenum,femm, channel))
-                            #chlarchlist.append([femm, channel, larchnlNum])
-                            #if (channel>=0 and channel<32):
-                                #larchnlNumInd = str(chMap.CrateFEMCh2PlaneWire(cratenum,femm, channel))
-                            #if(channel>=32 and channel<64):
-                                #larchnlNumCol = str(chMap.CrateFEMCh2PlaneWire(cratenum,femm, channel))
                             tpcnt = 0
                             tot = ""
                             intgrl = ""
@@ -216,11 +158,6 @@ for r in range(25):
                             channel = int(wlb[-6:],2)
                             #channellist.append(channel)
                             larchnlNum = str(chMap.CrateFEMCh2PlaneWire(cratenum,femm, channel))
-                            #chlarchlist.append([femm, channel, larchnlNum])
-                            #if (channel>=0 and channel<32):
-                                #larchnlNumInd = str(chMap.CrateFEMCh2PlaneWire(cratenum,femm, channel))
-                            #if(channel>=32 and channel<64):
-                                #larchnlNumCol = str(chMap.CrateFEMCh2PlaneWire(cratenum,femm, channel))
 
                             tpcnt = 0
                             tot = ""
@@ -229,8 +166,6 @@ for r in range(25):
                             amp = ""
                         if wrb[0:2] == "01":
                             timetick=int(wrb[2:],2)
-                            #timelist.append(timetick)
-                            #print("TIMETICK rb = " + str(timetick))
                         if wlb[0:2] == "01":
                             #print(wlb)
                             timetick=int(wlb[2:],2)
@@ -258,20 +193,7 @@ for r in range(25):
                             nsamps = ""  
                 
 #f.close()
-with open('output.txt', 'w') as fInd:     
-    json.dump(tplistinduction, fInd)
 
-
-
-#print(len(tplistcollection))
-
-
-         
-                    #min1p=min1p+frmcntby0
-                    #print("min1p at end: "+str(min1p))
-                    #print("Check on framelist: "+str(framelist))
-                    #print("Check on last TP in list: "+str(tplistcollection[-1]))
-                    #print("FinalTPList: "+str(len(tplistcollection)))
-                    #tplistcollection.clear()
-                    #print("Clearing tplistcollection")
+#with open('output.txt', 'w') as fInd:     
+json.dump(tplistinduction, outf)
 
