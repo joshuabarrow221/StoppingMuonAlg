@@ -75,7 +75,7 @@ class ChannelMap:
             return [-1, -1, -1]
 
 chMap = ChannelMap("ChnlMap.txt")
-cratenum=2
+cratenum=sys.argv[3]
 framelistfull = []
 framelist2 = 0
 tdiffP2=tdiff
