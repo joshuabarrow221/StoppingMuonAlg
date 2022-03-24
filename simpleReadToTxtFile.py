@@ -183,7 +183,8 @@ for r in range(25):
                             amp = str(int(wrh[1:],16))
                         if tpcnt == 4:
                             intgrl = str(int(intgrl+str(wrh[1:]),16)) #str(wrh[1:]) #str(wrh[1:])
-                            tplistinduction.append([frame, femm, int(larchnlNum), timetick, int(intgrl), int(tot), int(amp)])
+                            if(amp!=0 and intgrl!=0 and tot!=0):
+                                tplistinduction.append([frame, femm, int(larchnlNum), timetick, int(intgrl), int(tot), int(amp)])
                             
                             tpcnt = 0                                                               
                             tot = ""                                                                                
