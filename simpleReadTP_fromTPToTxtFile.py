@@ -69,7 +69,7 @@ class ChannelMap:
         except KeyError:
             return [-1, -1, -1]
 
-chMap = ChannelMap("../ChnlMap.txt")
+chMap = ChannelMap("ChnlMap.txt")
 cratenum=sys.argv[3]
 
 for l in f:
