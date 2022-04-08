@@ -117,8 +117,8 @@ class ChannelMap:
 
 chMap = ChannelMap("ChnlMap.txt")
 #Need to change the cratenumber for various SEBs                                                                            
-cratenum=2
-CrateID=2
+CrateID=sys.argv[3]
+#CrateID=7
 
 minFrame=0
 changeMin=False
@@ -209,7 +209,7 @@ for l in f:
             wlb = bin(int(wlh, scale))[2:].zfill(num_of_bits)
             wrd = int(wrh, 16)
             wld = int(wlh, 16)
-            if (wf[0]=="F"):
+            if (wf[0]=="F" or wrh[0]=="1"):
                 hdrcnt += 1
                 if hdrcnt == 1:
                     #print("hdrcnt1: "+str(wf))
@@ -224,6 +224,7 @@ for l in f:
                 if hdrcnt == 5:
                     #print("hdrcnt5: "+str(wf))
                     outf.write(wf+' ')
+                    #print("hdrcnt: "+str(wf))
                     frame=int(wrh[1:], 16) + int(wlh[1:], 16)
                     hexframe =  hex(frame)
                     #print("Frame is:" +str(frame))
@@ -235,7 +236,8 @@ for l in f:
                 if hdrcnt == 7:
                     #print("hdrcnt7: "+str(wf))
                     outf.write(wf+' ')
-
+                if hdrcnt == 8:
+                    outf.write(wf+' ')
                    
             if (wf[0:2] == "F1" and wf[4:8] == "FFFF"):
                 femm=int(wlb[-5:], 2)
@@ -243,6 +245,7 @@ for l in f:
             elif wf == "E0000000":
                 outf.write(wf+' ')
                 hdrcnt = 0
+
             else:
                 if wrh[0] == "1":
                     outf.write(wf+' ')
@@ -331,11 +334,11 @@ for l in f:
                     outf.write(wf+' ')
                     channel=int(wlb[-6:],2)
                     #print("left channel: "+str(channel))
-                    larchnlNum = str(chMap.CrateFEMCh2PlaneWire(cratenum,femm, channel))
+                    larchnlNum = str(chMap.CrateFEMCh2PlaneWire(CrateID,femm, channel))
                     if (channel >= 0 and channel < 32):
-                        larchnlNumInd =str(chMap.CrateFEMCh2PlaneWire(cratenum,femm, channel))
+                        larchnlNumInd =str(chMap.CrateFEMCh2PlaneWire(CrateID,femm, channel))
                     else:
-                        larchnlNumCol =str(chMap.CrateFEMCh2PlaneWire(cratenum,femm, channel))
+                        larchnlNumCol =str(chMap.CrateFEMCh2PlaneWire(CrateID,femm, channel))
                     tot=0
                     intgrl=0
                     amp=0
@@ -411,6 +414,8 @@ for l in f:
                         INTGRL = first+second+third+four
                         outf.write(INTGRL+' ')
                         INTGRLlist.append(INTGRL)
+
+
 
 #print("tplist: "+str(len(tplistint)))
 #sed 's/\([^ ]*\) /\1\n/' test | fold -w 63 > test1
