@@ -51,7 +51,8 @@ class ChannelMap:
         self.table_larsoft2readout = {} # The keys are plane, wire number                                                                 
         with open(mapfile) as inf:
             for line in inf.readlines():
-                crate, fem, ch, plane, wire = line.split()
+                #crate, fem, ch, plane, wire = line.split()
+                plane, wire , crate, fem, ch = line.split()
                 #self.table_readout2larsoft[(int(crate), int(fem), int(ch))] = int(wire)# [plane, int(wire)]                               
                 self.table_readout2larsoft[(int(crate), int(fem), int(ch))] = int(wire)
                 self.table_larsoft2readout[(plane, int(wire))] = [int(crate), int(fem), int(ch)]
