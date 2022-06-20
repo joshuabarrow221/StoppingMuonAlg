@@ -1,3 +1,11 @@
+//Code written by Daisy Kalra (June 20, 2022) dkalra@nevis.columbia.edu
+// Binary decoder to decode SN data, calculate TPs and write TPs to a text file.
+//To run this code:
+// g++ -o bin ReadBinary_chnlMap.cpp
+// ./bin NameOfSNBinaryFile.ubdaq CrateNumber OutputTxtFileToSaveTPs 
+// example: ./bin 2StreamTest-SN-seb03-2021_10_11_23_23_53-0028554-00000.ubdaq 3 tpinfo.txt
+
+
 #include <iostream>
 #include <fstream>
 #include <stdint.h>
@@ -39,7 +47,8 @@ int main(int argc, char** argv){
   std::ifstream mapFile;
   mapFile.open("ChnlMap.txt");
   std::ofstream outputFile;
-  outputFile.open("tpinfo.txt");
+  //  outputFile.open("tpinfo.txt");
+  outputFile.open(argv[3]);
 
   string plane;
   int LArWire;
