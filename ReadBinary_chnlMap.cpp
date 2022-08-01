@@ -1,9 +1,9 @@
-//Code written by Daisy Kalra (June 20, 2022) dkalra@nevis.columbia.edu
-// Binary decoder to decode SN data, calculate TPs and write TPs to a text file.
-//To run this code:
-// g++ -o bin ReadBinary_chnlMap.cpp
-// ./bin NameOfSNBinaryFile.ubdaq CrateNumber OutputTxtFileToSaveTPs 
-// example: ./bin 2StreamTest-SN-seb03-2021_10_11_23_23_53-0028554-00000.ubdaq 3 tpinfo.txt
+//Code written by Daisy Kalra (June 20, 2022) dkalra@nevis.columbia.edu                                                                                       
+// Binary decoder to decode SN data, calculate TPs and write TPs to a text file.                                                                              
+//To run this code:                                                                                                                                           
+// g++ -o bin ReadBinary_chnlMap.cpp                                                                                                                          
+// ./bin NameOfSNBinaryFile.ubdaq CrateNumber OutputTxtFileToSaveTPs                                                                                          
+// example: ./bin 2StreamTest-SN-seb03-2021_10_11_23_23_53-0028554-00000.ubdaq 3 tpinfo.txt                                                                    
 
 
 #include <iostream>
@@ -25,6 +25,19 @@ struct ForChannelMap {
   int LArWire = {0};
 };
 
+struct PassInfoToStitching {
+
+  uint32_t PassFrame = {0};
+  uint32_t PassFem   = {0};
+  uint32_t PassChnl  = {0};
+  uint16_t PassTime  = {0};
+  int      PassTot   = {0};
+  uint64_t PassAmp   = {0};
+  uint64_t PassIntgrl= {0};
+
+};
+
+
 
 int returnWire(int fcrate, int ffem, int fch, std::vector<ForChannelMap> fholdChMapIds){
   int mappedwire;
@@ -42,10 +55,10 @@ int returnWire(int fcrate, int ffem, int fch, std::vector<ForChannelMap> fholdCh
 int main(int argc, char** argv){
 
   //For channel mapping 
-  int CRATE=strtol(argv[2], nullptr, 0); //provide crate number as an argument
+  int CRATE=strtol(argv[2], nullptr, 0); //Change for SEB
   std::vector<ForChannelMap> holdChMapIds;
   std::ifstream mapFile;
-  mapFile.open("ChnlMap.txt");
+  mapFile.open("chmapnew.txt");
   std::ofstream outputFile;
   //  outputFile.open("tpinfo.txt");
   outputFile.open(argv[3]);
@@ -63,10 +76,16 @@ int main(int argc, char** argv){
   }
   mapFile.close();
 
+  //For passing infor to stitching code
+  const PassInfoToStitching& input_tp = {0};
+  std::vector<PassInfoToStitching> tp_list;
+
   //Read binary code starts
   int k=-1;
   int femHdrCount=0;
   uint32_t frame = 0;
+  uint32_t minFrame;
+  int FrameCounter = 0;
   uint32_t frame1, frame2, frame3, frame4, framebitsToskip;
   uint32_t fem, channel, mappedchannel;
   uint16_t timetick=0;
@@ -110,6 +129,17 @@ int main(int argc, char** argv){
       }
 
     else if (word32b  == 0xe0000000){
+      cout << "End of frame*******************" << endl;
+      if(frame4==minFrame+2){
+	//Pass the tp_list to next stitching code and then clear the list, for now checking the size of tp_list here and then clearing the tp_list
+	// --> Need to put interfacing code here
+
+	cout << "Size of tp_list vector at the end of 3 frames : " << std::dec << tp_list.size() << endl;
+	FrameCounter=0;
+	tp_list.clear();
+
+      }
+
     }
 
     else {
@@ -130,12 +160,21 @@ int main(int argc, char** argv){
 	    if ((framebitsToskip-frame2)>=0){
 	      frame3 = (frame<<12)+(frame1<<6)+(frame2);
 	      frame4 = (frame3 & 0xffffff);
+	      if(frame4!=0){
+	      FrameCounter+=1;
+	      }
+	      if(FrameCounter==1){                                                                                                                       
+	        minFrame = frame4;                                                                                                                      
+		cout << std::dec << minFrame << endl;
+		 }                                                                                                                                        
+	   
 	      //std::cout << "RH frame :****** " << std::dec << (frame3 & 0xffffff) << std::endl;
 	      //std::cout << "RH frame :****** " << std::dec << frame4 << std::endl;
 
-	    }
+		  }
 	    else if ((framebitsToskip-frame2)<0){
-	    frame3 = (frame<<12)+(frame1<<6)+(frame2); 
+	    frame3 = (frame<<12)+(frame1<<6)+(frame2);
+	    std::cout << "Roll Over" << std::endl;
 	    //Subtract 2^6-1 from frame number to take care of roll over
 	    //	    std::cout << "RH frame :****** " << std::dec << (frame3 & 0xffffff)-63 << std::endl;
 	    // std::cout << "RH frame :****** " << std::dec << (frame4)-63 << std::endl;
@@ -161,8 +200,19 @@ int main(int argc, char** argv){
             }
 
 	    if ((framebitsToskip-frame2)<0){
+	      std::cout << "Roll Over" <<std::endl;
 	      std::cout << "diff. : " << (framebitsToskip-frame2)<< " and dec is: " << std::dec <<  (framebitsToskip-frame2) << std::endl;
 	      frame3 = (frame<<12)+(frame1<<6)+(frame2);
+	      frame4 = (frame3 & 0xffffff);
+	      if(frame4!=0){
+		FrameCounter+=1;
+	      }
+	      if(FrameCounter==1){
+                minFrame = frame4;
+                cout <<std::dec << minFrame <<endl;
+
+	      }
+
 	      //    std::cout << "LH frame :****** " << std::dec << (frame4)-63 << std::endl;// (frame3 & 0xffffff)-63 << std::endl;
 	    } 
 	    k+=1;
@@ -212,7 +262,19 @@ int main(int argc, char** argv){
 
 	  outputFile << frame4 << "\t" << fem <<  "\t" << mappedchannel << "\t" << timetick << "\t" << amp << "\t" << tot << "\t" << intgrl << "\n";
 
+	  tp_list.push_back({frame4,fem,mappedchannel,timetick,amp,tot,intgrl});
+	  cout << "Size: " << tp_list.size() << endl;
+	  //	  cout << tp_list[0].PassFrame << endl;
+
+
+	  //if(FrameCounter==1){
+	  // minFrame = frame4;
+	  // }
+	  
+
 	}
+
+
 
 	timetick =  first16b & 0x3fff ;
 	//std::cout << "time first" << std::dec << timetick << std::endl;                                              
@@ -277,7 +339,8 @@ int main(int argc, char** argv){
 	   std::cout << "intgrl: " << std::dec << intgrl << std::endl;                                                    
 	   std::cout << "time: " << std::dec << timetick << std::endl; 
 	   outputFile << frame4 << "\t" << fem <<  "\t" << mappedchannel << "\t" << timetick << "\t" << amp << "\t" << tot << "\t" << intgrl << "\n";
-
+	   tp_list.push_back({frame4,fem,mappedchannel,timetick,amp,tot,intgrl});
+	   cout << "Size: " << tp_list.size() << endl;
 
 	 }
 	 timetick =  last16b & 0x3fff ;
