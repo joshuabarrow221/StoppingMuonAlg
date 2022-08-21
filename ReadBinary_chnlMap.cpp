@@ -1,9 +1,8 @@
-//Code written by Daisy Kalra (June 20, 2022) dkalra@nevis.columbia.edu                                                                                       
-// Binary decoder to decode SN data, calculate TPs and write TPs to a text file.                                                                              
-//To run this code:                                                                                                                                           
-// g++ -o bin ReadBinary_chnlMap.cpp                                                                                                                          
-// ./bin NameOfSNBinaryFile.ubdaq CrateNumber OutputTxtFileToSaveTPs                                                                                          
-// example: ./bin 2StreamTest-SN-seb03-2021_10_11_23_23_53-0028554-00000.ubdaq 3 tpinfo.txt                                                                    
+//Code written by Daisy Kalra (June 20, 2022) dkalra@nevis.columbia.edu                                                                     
+// Binary decoder to decode SN data, calculate TPs and write TPs to a text file.                                                            
+//To run this code:                                                                                                                         
+// g++ -o bin ReadBinary_chnlMap.cpp                                                                                                        
+// ./bin NameOfSNBinaryFile.ubdaq CrateNumber OutputTxtFileToSaveTPs                                                                        
 
 
 #include <iostream>
@@ -14,26 +13,65 @@
 #include <map>
 #include <tuple>
 #include <vector>
-
+#include <typeinfo>
 
 using namespace std;
 
 struct ForChannelMap {
   int crate = {0};
-  int fem   = {0};
+  int femchmap   = {0};
   int ch    = {0};
   int LArWire = {0};
+
+  ForChannelMap(int crate11, int femchmap11, int ch11, int LArWire11)
+  {
+    crate = crate11;
+    femchmap = femchmap11;
+    ch = ch11;
+    LArWire = LArWire11;
+  }
+
+
+
 };
 
-struct PassInfoToStitching {
 
-  uint32_t PassFrame = {0};
-  uint32_t PassFem   = {0};
-  uint32_t PassChnl  = {0};
-  uint16_t PassTime  = {0};
-  int      PassTot   = {0};
-  uint64_t PassAmp   = {0};
-  uint64_t PassIntgrl= {0};
+struct PassInfoToStitching {
+  /*  uint32_t frame4 = {0};
+  uint32_t fem   = {0};
+  uint32_t mappedchannel  = {0};
+  uint16_t timetick  = {0};
+  int      tot   = {0};
+  uint64_t amp   = {0};
+  uint64_t intgrl= {0};
+  */
+  //Changes for converting int's to string 
+
+  string frame4 = {0};
+  string fem   = {0};
+  string mappedchannel  = {0};
+  string timetick  = {0};
+  string      tot   = {0};
+  string amp   = {0};
+  string intgrl= {0};
+
+  //  PassInfoToStitching(uint32_t fr4, uint32_t fm, uint32_t mc, uint16_t tt, int tot1, uint64_t am, uint64_t in)
+  //Changes for converting int's to string  
+  PassInfoToStitching(string fr4, string fm, string mc, string tt, string tot1, string am, string in)
+
+
+  {
+
+    frame4 = fr4;
+    fem = fm;
+    mappedchannel = mc;
+    timetick = tt;
+    tot = tot1;
+    amp = am;
+    intgrl = in;
+
+  }
+
 
 };
 
@@ -43,8 +81,8 @@ int returnWire(int fcrate, int ffem, int fch, std::vector<ForChannelMap> fholdCh
   int mappedwire;
   for (int i=0; i<fholdChMapIds.size(); i++){
     std::map<std::tuple<int,int,int>, int> multimap;
-    if(fholdChMapIds[i].crate==fcrate and fholdChMapIds[i].fem == ffem and fholdChMapIds[i].ch == fch) {
-      std::tuple<int,int,int> key(fholdChMapIds[i].crate, fholdChMapIds[i].fem, fholdChMapIds[i].ch);
+    if(fholdChMapIds[i].crate==fcrate and fholdChMapIds[i].femchmap == ffem and fholdChMapIds[i].ch == fch) {
+      std::tuple<int,int,int> key(fholdChMapIds[i].crate, fholdChMapIds[i].femchmap, fholdChMapIds[i].ch);
       int val = fholdChMapIds[i].LArWire;
       multimap[key] = val;
       mappedwire = multimap[key];
@@ -71,14 +109,15 @@ int main(int argc, char** argv){
   int mappedwire;
   if(mapFile.is_open() && !mapFile.eof()) {
     while(mapFile >> plane >> LArWire >> crate >> femchmap >> ch ){  // FemId >> ChnlId){                                                         
-      holdChMapIds.push_back({crate,femchmap,ch,LArWire});
-    }
+      //      holdChMapIds.push_back({crate,femchmap,ch,LArWire});
+      holdChMapIds.emplace_back(crate,femchmap,ch,LArWire);
+}
   }
   mapFile.close();
 
   //For passing infor to stitching code
-  const PassInfoToStitching& input_tp = {0};
-  std::vector<PassInfoToStitching> tp_list;
+  //  const PassInfoToStitching& input_tp = {0};
+  std::vector<PassInfoToStitching> tp_list ;
 
   //Read binary code starts
   int k=-1;
@@ -260,14 +299,31 @@ int main(int argc, char** argv){
 	  std::cout << "intgrl: " << std::dec << intgrl << std::endl;                                                    
 	  std::cout << "time: " << std::dec << timetick << std::endl;    
 
-	  outputFile << frame4 << "\t" << fem <<  "\t" << mappedchannel << "\t" << timetick << "\t" << amp << "\t" << tot << "\t" << intgrl << "\n";
+   outputFile << frame4 << "\t" << fem <<  "\t" << mappedchannel << "\t" << timetick << "\t" << amp << "\t" << tot << "\t" << intgrl << "\n";
 
-	  tp_list.push_back({frame4,fem,mappedchannel,timetick,amp,tot,intgrl});
+   //   tp_list.push_back({std::to_string(frame4),std::to_string(fem),std::to_string(mappedchannel),timetick,amp,tot,intgrl});
+  
+   //Changes for converting int's to string  
+   tp_list.emplace_back(std::to_string(frame4),std::to_string(fem),std::to_string(mappedchannel),std::to_string(timetick),std::to_string(amp),std::to_string(tot),std::to_string(intgrl));
+
+
+
 	  cout << "Size: " << tp_list.size() << endl;
 	  //	  cout << tp_list[0].PassFrame << endl;
 
+	  cout << "String test : " << tp_list[0].frame4 << endl;
+	  //Verified conversion of int to string 
+	  /*
+	  cout << typeid(frame4).name() << endl;
+	  cout << typeid(tp_list[0].frame4).name() << endl;
+	  cout << typeid(tp_list[0].fem).name() << endl;
+	  cout << typeid(tp_list[0].mappedchannel).name() << endl;
+	  cout << typeid(tp_list[0].timetick).name() << endl;
+	  cout << typeid(tp_list[0].amp).name() << endl;
+	  cout << typeid(tp_list[0].tot).name() << endl;
+	  cout << typeid(tp_list[0].intgrl).name() << endl;
+	  */ //if(FrameCounter==1){
 
-	  //if(FrameCounter==1){
 	  // minFrame = frame4;
 	  // }
 	  
@@ -339,8 +395,15 @@ int main(int argc, char** argv){
 	   std::cout << "intgrl: " << std::dec << intgrl << std::endl;                                                    
 	   std::cout << "time: " << std::dec << timetick << std::endl; 
 	   outputFile << frame4 << "\t" << fem <<  "\t" << mappedchannel << "\t" << timetick << "\t" << amp << "\t" << tot << "\t" << intgrl << "\n";
-	   tp_list.push_back({frame4,fem,mappedchannel,timetick,amp,tot,intgrl});
+
+	   //	   tp_list.push_back({std::to_string(frame4),fem,mappedchannel,timetick,amp,tot,intgrl});
+	   //	   tp_list.emplace_back(std::to_string(frame4),fem,mappedchannel,timetick,amp,tot,intgrl);
+	   //Changes for converting int's to string  	  
+ tp_list.emplace_back(std::to_string(frame4),std::to_string(fem),std::to_string(mappedchannel),std::to_string(timetick),std::to_string(amp),std::to_string(tot),std::to_string(intgrl));
+
+
 	   cout << "Size: " << tp_list.size() << endl;
+
 
 	 }
 	 timetick =  last16b & 0x3fff ;
